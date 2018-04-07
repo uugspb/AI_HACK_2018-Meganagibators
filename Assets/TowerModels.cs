@@ -4,6 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class PlayerModel{
+    public int skillPoints = 100;
     public float MaxHealth = 100.0f;
     public float Armor = 100.0f;
     public float RegenPerSecond = 2.0f;
