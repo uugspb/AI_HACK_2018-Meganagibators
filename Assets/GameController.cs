@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void Damage()
+    public void Damage(GunModel model)
     {
         
     }

@@ -34,6 +34,19 @@ public class Tower : MonoBehaviour
 
     public void StartGame()
     {
-
+        StartCoroutine(DamageCoroutine());
     } 
+
+    public void StopGame()
+    {
+        StopAllCoroutines();
+    }
+
+    private IEnumerator DamageCoroutine()
+    {
+        while (true) { 
+            yield return new WaitForSeconds(gun.fireRate);
+            GameController.Instance.Damage(gun);
+        }
+    }
 }
