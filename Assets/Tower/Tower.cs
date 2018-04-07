@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    #region Inspector
+    public float shootingAnimRange = 0.2f;
+    public Animator avatarAnimator;
+    #endregion
 
-    PlayerModel player;
+    PlayerModel playerBase;
+    PlayerModel playerRuntime;
     GunModel gun;
     UserSettings settings;
 
@@ -21,10 +26,10 @@ public class Tower : MonoBehaviour
 
     public void Initialize()
     {
-        player = new PlayerModel();
+        playerBase = new PlayerModel();
         gun = new GunModel();
         settings = FindObjectOfType<UserSettings>();
-        settings.Init(player);
+        settings.Init(playerBase);
     }
 
     public void StartGame()
@@ -37,11 +42,33 @@ public class Tower : MonoBehaviour
         StopAllCoroutines();
     }
 
+    public void Flush()
+    {
+
+    }
+
+    public void Damage(float count)
+    {
+
+    }
+
     private IEnumerator DamageCoroutine()
     {
         while (true) { 
             yield return new WaitForSeconds(gun.fireRate);
+            ShowShotAnim();
             GameController.Instance.Damage(gun);
         }
+    }
+
+    private void ShowShotAnim()
+    {
+        avatarAnimator.SetBool("shot", true);
+        LeanTween.delayedCall(shootingAnimRange, HideShotAnim);
+    }
+
+    private void HideShotAnim()
+    {
+        avatarAnimator.SetBool("shot", false);
     }
 }
