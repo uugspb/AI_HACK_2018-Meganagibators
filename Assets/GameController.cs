@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public float bulletSpeed = 0.1f;
 
     private int wavesCount;
+    private bool waveSarted = false;
     
     private List<NPC> npcs = new List<NPC>();
     private List<VariationStats> variationStats = new List<VariationStats>();
@@ -47,6 +48,8 @@ public class GameController : MonoBehaviour
 
     public void StartWave()
     {
+        if (waveSarted) return;
+        waveSarted = true;
         variationStats.Clear();
         wavesCount++;
         
@@ -64,12 +67,12 @@ public class GameController : MonoBehaviour
         var spawnEnemes = 0;
         var partTime = spawner.SpawnTime / spawner.SpawnRate;
         var tower = Tower.Instance;
-        while (spawnEnemes <= spawner.SpawnRate)
+        do
         {
             var npc = spawner.SpawnBot();
             npcs.Add(npc);
 
-            var moveTime = 1/npc.model.Speed;
+            var moveTime = 1 / npc.model.Speed;
             LeanTween.moveX(npc.gameObject, tower.bulletStartPlace.transform.position.x, moveTime)
                 .setOnComplete(() =>
                 {
@@ -77,8 +80,14 @@ public class GameController : MonoBehaviour
                     npc.NearTower();
                 });
             spawnEnemes++;
+            if(spawnEnemes >= spawner.SpawnRate)
+            {
+                waveSarted = false;
+                yield break;
+            }
             yield return new WaitForSeconds(partTime);
         }
+        while (true);
     }
 
     private void NPCDamageStart(NPC npc)
