@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class GeneticsController : MonoBehaviour
 {
-    private static Spawner _instance;
+    private static GeneticsController _instance;
 
-    public static Spawner Instance
+    public static GeneticsController Instance
     {
         get
         {
-            if (_instance == null) _instance = FindObjectOfType<Spawner>();
+            if (_instance == null) _instance = FindObjectOfType<GeneticsController>();
             return _instance;
         }
     }
