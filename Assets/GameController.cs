@@ -13,6 +13,10 @@ public class GameController : MonoBehaviour
     [Header("Пауза в секундах")]
     public int PauseTime;
 
+    [Header("Префаб Патрона для стрельбы")]
+    public GameObject Bullet;
+    public float bulletSpeed = 0.1f;
+
     private int wavesCount;
     
     private List<NPC> npcs = new List<NPC>();
@@ -102,31 +106,42 @@ public class GameController : MonoBehaviour
             Debug.LogError("WrongDamage");
             return;
         }
-        
+
+        var bullet = Instantiate(Bullet);
+        bullet.transform.position = Tower.Instance.bulletStartPlace.position;
         var npc = npcs[0];
+        var distanceBullet = Vector3.Distance(bullet.transform.position, npc.transform.position);
+        LeanTween.move(bullet, npc.transform.position, distanceBullet / bulletSpeed)
+            .setOnComplete(() => 
+            {
+                BulletFlowen(npc, model, bullet);
+            });   
+    }
+    
+    private void BulletFlowen(NPC npc, GunModel model, GameObject bullet)
+    {
+        Destroy(bullet);
         npc.model.HP -= model.Damage;
-        
-        Debug.Log("damage " + npc.model.HP + " | " + model.Damage);
-        
+
         if (npc.model.HP <= 0)
         {
             // дистанция
-            var fullDistance = Vector3.Distance(Spawner.Instance.StartPoint.position, Tower.Instance.transform.position);
-            var distance = Vector3.Distance(npc.transform.position, Tower.Instance.transform.position);
+            var startPosition = Tower.Instance.bulletStartPlace.transform.position;
+            var fullDistance = Vector3.Distance(Spawner.Instance.StartPoint.position, startPosition);
+            var distance = Vector3.Distance(npc.transform.position, startPosition);
             var distancePassed = distance / fullDistance;
 
             var variationStat = new VariationStats(distancePassed, npc.DamageDealt);
-           
+
             variationStats.Add(variationStat);
             npcs.RemoveAt(0);
             npc.Kill();
-            Debug.Log("destroy");
             if (npcs.Count == 0)
             {
                 GeneticsController.Instance.OnVariationDied(variationStats.ToArray());
                 StartWave();
             }
-        } 
+        }
     }
 
     public void OnStartClick()

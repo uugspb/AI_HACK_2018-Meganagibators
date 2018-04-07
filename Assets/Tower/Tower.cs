@@ -10,6 +10,8 @@ public class Tower : MonoBehaviour
     public event Action OnDead;
     public float Health;
     public ResourceBar HealthBar;
+    [Header("Откуда вылетает пуля")]
+    public Transform bulletStartPlace;
 
     PlayerModel playerBase;
     GunModel gun;
