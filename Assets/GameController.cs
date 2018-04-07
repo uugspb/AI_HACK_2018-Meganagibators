@@ -59,13 +59,13 @@ public class GameController : MonoBehaviour
         }
         var spawnEnemes = 0;
         var partTime = spawner.SpawnTime / spawner.SpawnRate;
-        var tower = global::Tower.Instance;
+        var tower = Tower.Instance;
         while (spawnEnemes <= spawner.SpawnRate)
         {
             var npc = spawner.SpawnBot();
             npcs.Add(npc);
 
-            var moveTime = npc.model.Speed;
+            var moveTime = 1/npc.model.Speed;
             LeanTween.move(npc.gameObject, tower.transform.position, moveTime)
                 .setOnComplete(() =>
                 {
@@ -104,6 +104,9 @@ public class GameController : MonoBehaviour
         
         var npc = npcs[npcs.Count - 1];
         npc.model.HP -= model.Damage;
+        
+        Debug.Log("damage " + npc.model.HP + " | " + model.Damage);
+        
         if (npc.model.HP <= 0)
         {
             // дистанция
@@ -116,6 +119,7 @@ public class GameController : MonoBehaviour
             variationStats.Add(variationStat);
             npcs.RemoveAt(npcs.Count - 1);
             Destroy(npc.gameObject);
+            Debug.Log("destroy");
             if (npcs.Count == 0)
             {
                 GeneticsController.Instance.OnVariationDied(variationStats.ToArray());
@@ -126,7 +130,7 @@ public class GameController : MonoBehaviour
 
     public void OnStartClick()
     {
-        global::Tower.Instance.StartGame();
+        Tower.Instance.StartGame();
         StartWave();
     }
 }
