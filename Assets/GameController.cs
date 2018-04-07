@@ -22,6 +22,8 @@ public class GameController : MonoBehaviour
 
     private int wavesCount;
 
+    private bool waveSarted = false;
+    
     private List<NPC> npcs = new List<NPC>();
     private List<VariationStats> variationStats = new List<VariationStats>();
 
@@ -50,6 +52,8 @@ public class GameController : MonoBehaviour
 
     public void StartWave()
     {
+        if (waveSarted) return;
+        waveSarted = true;
         variationStats.Clear();
         wavesCount++;
 
@@ -68,7 +72,7 @@ public class GameController : MonoBehaviour
         var spawnEnemes = 0;
         var partTime = spawner.SpawnTime / spawner.SpawnRate;
         var tower = Tower.Instance;
-        while (spawnEnemes <= spawner.SpawnRate)
+        do
         {
             var npc = spawner.SpawnBot();
             npcs.Add(npc);
@@ -81,8 +85,14 @@ public class GameController : MonoBehaviour
                     npc.NearTower();
                 });
             spawnEnemes++;
+            if(spawnEnemes >= spawner.SpawnRate)
+            {
+                waveSarted = false;
+                yield break;
+            }
             yield return new WaitForSeconds(partTime);
         }
+        while (true);
     }
 
     private void NPCDamageStart(NPC npc)
