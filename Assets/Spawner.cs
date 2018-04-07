@@ -13,7 +13,8 @@ public class Spawner : MonoBehaviour
     
     [Header("Точка спавна npc")]
     public Transform StartPoint;
-    
+    public Transform StartPoint2;
+
     private static Spawner _instance;
 
     public static Spawner Instance
@@ -32,7 +33,8 @@ public class Spawner : MonoBehaviour
 
         var randPrefab = NPCprefabs[Random.Range(0, NPCprefabs.Count)];
         var npc = Instantiate(randPrefab).GetComponent<NPC>();
-        npc.transform.position = StartPoint.position;
+        var randY = Random.Range(StartPoint.position.y, StartPoint2.position.y);
+        npc.transform.position = new Vector3(StartPoint.position.x, randY);
 
         npc.model = npcModel;
 
