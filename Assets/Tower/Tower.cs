@@ -8,7 +8,8 @@ public class Tower : MonoBehaviour
     public float shootingAnimRange = 0.2f;
     public Animator avatarAnimator;
     public event Action OnDead;
-    public float Health;   
+    public float Health;
+    public ResourceBar HealthBar;
 
     PlayerModel playerBase;
     GunModel gun;
@@ -22,6 +23,12 @@ public class Tower : MonoBehaviour
     private Tower()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        HealthBar.maxAmount = playerBase.MaxHealth/50;
+        HealthBar.amount = playerBase.Health/50;
     }
 
     public void Initialize()
