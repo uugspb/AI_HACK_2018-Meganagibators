@@ -10,64 +10,14 @@ public class GeneticsController : MonoBehaviour
         public Variation[] parents;
         public Variation[] variations;
     }
-
-    public class Variation
-    {
-        // пусть будут паблик статик, чтоб если что был доступ через какую-нибудь дебажную тулзу
-        // (если конечно до нее дойдет дело)
-        #region static
-        public static float hpValueByLevel = 1.0f;
-        public static float armorValueByLevel = 1.0f;
-        public static float speedValueByLevel = 1.0f;
-        public static float damageValueByLevel = 1.0f;
-        public static float fireRateValueByLevel = 1.0f;
-        public static float spawnRateValueByLevel = 1.0f;
-        #endregion
-
-        #region fields
-        public int hpLevel;
-        public int armorLevel;
-        public int speedLevel;
-        public int damageLevel;
-        public int fireRateLevel;
-        public int spawnRateLevel;
-        
-        public float fitnessValue;
-        #endregion
-
-        #region propeties
-        public float HPValue { get { return hpValueByLevel * hpLevel; } }
-        public float ArmorValue { get { return armorValueByLevel * armorLevel; } }
-        public float SpeedValue { get { return speedValueByLevel * speedLevel; } }
-        public float DamageValue { get { return damageValueByLevel * damageLevel; } }
-        public float FireRateValue { get { return fireRateValueByLevel * fireRateLevel; } }
-        public float SpawnRateValue { get { return spawnRateValueByLevel * spawnRateLevel; } }
-        #endregion
-
-        #region public methods
-        public Variation(int hpLevel, int armorLevel, int speedLevel, int damageLevel, int fireRateLevel, int spawnRateLevel)
-        {
-            this.hpLevel = hpLevel;
-            this.armorLevel = armorLevel;
-            this.speedLevel = speedLevel;
-            this.damageLevel = damageLevel;
-            this.fireRateLevel = fireRateLevel;
-            this.spawnRateLevel = spawnRateLevel;
-
-            fitnessValue = float.NaN;
-        }
-
-        public NPCModel ToNPCModel()
-        {
-            return new NPCModel(HPValue, ArmorValue, SpeedValue, DamageValue, FireRateValue, SpawnRateValue);
-        }
-        #endregion
-    }
     #endregion
 
     #region inspector fields
     [Range(2, int.MaxValue)]
     public int parentsAmount = 2;
+
+    public float baseBotSkillPoints = 20.0f;
+    public float levelUpSkillPoints = 20.0f;
     #endregion
 
     #region fields
@@ -116,13 +66,13 @@ public class GeneticsController : MonoBehaviour
 
         float fitnessValue = CalcFitnessValue(avg);
 
-        // TODO собственно говоря начислить скиллпоинтов бот
+        // TODO собственно говоря начислить скиллпоинтов боту
     }
 
-    public void OnPlayerLevelUp(int receivedSkillPoints)
+    public void OnPlayerLevelUp()
     {
         // добавляем боту столько скилллпоинтов, сколько было получено игроком
-        currentBotSkillPoints += receivedSkillPoints;
+        currentBotSkillPoints += levelUpSkillPoints;
     }
     #endregion
 
@@ -151,7 +101,7 @@ public class GeneticsController : MonoBehaviour
     private float CalcFitnessValue(VariationStats stats)
     {
         // TODO коэффициенты?
-        return stats.distancePassed + stats.damageDealt ;
+        return stats.distancePassed + stats.damageDealt;
     }
 
     private void CalcFitnessValues(Population population)
