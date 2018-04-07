@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject NPCprefab;
+    public List<GameObject> NPCprefabs;
 
     [Header("Сколько выпускаем")]
     public int SpawnRate;
@@ -29,7 +30,8 @@ public class Spawner : MonoBehaviour
         var gen = GeneticsController.Instance;
         var npcModel = gen.GetModel();
 
-        var npc = Instantiate(NPCprefab).GetComponent<NPC>();
+        var randPrefab = NPCprefabs[Random.Range(0, NPCprefabs.Count)];
+        var npc = Instantiate(randPrefab).GetComponent<NPC>();
         npc.transform.position = StartPoint.position;
 
         npc.model = npcModel;
