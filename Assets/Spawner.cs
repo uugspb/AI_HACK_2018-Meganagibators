@@ -2,9 +2,9 @@
 
 public class Spawner : MonoBehaviour
 {
-    private Spawner _instance;
+    private static Spawner _instance;
 
-    public Spawner Instance
+    public static Spawner Instance
     {
         get
         {

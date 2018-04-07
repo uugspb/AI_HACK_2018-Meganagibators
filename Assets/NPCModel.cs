@@ -6,7 +6,4 @@
 	public float Damage;
 	public float Rate;
 	public float SpawnRate;
-	
-	public float EdDamage;
-	public float EdPassedWay;
 }
