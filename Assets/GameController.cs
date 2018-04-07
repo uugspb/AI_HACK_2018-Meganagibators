@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        
+        Tower.Instance.Initialize();
     }
     
     public void StartWave()
@@ -53,13 +53,22 @@ public class GameController : MonoBehaviour
 
     public void Damage(GunModel model)
     {
-        
-        //var npc = npcs[npcs.Count];
-        //npc.model.HP
+        var npc = npcs[npcs.Count - 1];
+        npc.model.HP -= model.Damage;
+        if (npc.model.HP <= 0)
+        {
+            npcs.RemoveAt(npcs.Count - 1);
+            Destroy(npc.gameObject);
+            if (npcs.Count == 0)
+            {
+                
+            }
+        } 
     }
 
     public void OnStartClick()
     {
+        Tower.Instance.StartGame();
         StartWave();
     }
 }
