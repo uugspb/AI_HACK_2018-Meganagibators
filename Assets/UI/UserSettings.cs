@@ -33,24 +33,28 @@ public class UserSettings : MonoBehaviour {
     private void RegenSlider_OnAddButton(ParameterSlider obj)
     {
         var addingPoints = Math.Min(5, model.skillPoints);
-        model.RegenPerSecond = REG_PER_POINT * addingPoints;
+        model.RegenPerSecond += REG_PER_POINT * addingPoints;
         RegenSlider.value = model.RegenPerSecond;
+        model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();
     }
 
     private void ArmorSlider_OnAddButton(ParameterSlider obj)
     {
         var addingPoints = Math.Min(5, model.skillPoints);
-        model.Armor = ARM_PER_POINT* addingPoints;
-        ArmorSlider.value = model.RegenPerSecond;
+        model.Armor += ARM_PER_POINT* addingPoints;
+        ArmorSlider.value = model.Armor;
+        model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();
     }
 
     private void MaxHealthSlider_OnAddButton(ParameterSlider obj)
     {
         var addingPoints = Math.Min(5, model.skillPoints);
-        model.MaxHealth = REG_PER_POINT * addingPoints;
-        MaxHealthSlider.value = model.RegenPerSecond;
+        model.MaxHealth += REG_PER_POINT * addingPoints;
+        model.Health += REG_PER_POINT * addingPoints;
+        MaxHealthSlider.value = model.MaxHealth;
+        model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();
     }
 
