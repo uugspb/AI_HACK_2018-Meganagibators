@@ -8,4 +8,10 @@
     public float distancePassed;
 
     public float damageDealt;
+
+    public VariationStats(float distancePassed, float damageDealt)
+    {
+        this.distancePassed = distancePassed;
+        this.damageDealt = damageDealt;
+    }
 }
