@@ -70,7 +70,7 @@ public class GameController : MonoBehaviour
             npcs.Add(npc);
 
             var moveTime = 1/npc.model.Speed;
-            LeanTween.moveX(npc.gameObject, tower.transform.position.x, moveTime)
+            LeanTween.moveX(npc.gameObject, tower.bulletStartPlace.transform.position.x, moveTime)
                 .setOnComplete(() =>
                 {
                     NPCDamageStart(npc);
