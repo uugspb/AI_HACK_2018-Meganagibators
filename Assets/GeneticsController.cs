@@ -45,8 +45,10 @@ public class GeneticsController : MonoBehaviour
     #region public methods
     public NPCModel GetModel()
     {
-        lastGivenVariation = currentBestVariation;
-        return lastGivenVariation.ToNPCModel();
+        // TODO: пока генетика не готова, пусть возвращается какая-то базовая ерунда
+        return (new Variation(0, 0, 0, 0, 0, 0)).ToNPCModel();
+        //lastGivenVariation = currentBestVariation;
+        //return lastGivenVariation.ToNPCModel();
     }
 
     public void OnVariationDied(VariationStats[] stats)
