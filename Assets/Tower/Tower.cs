@@ -11,8 +11,8 @@ public class Tower : MonoBehaviour
     public float Health;
     public ResourceBar HealthBar;
 
-    PlayerModel playerBase;
-    GunModel gun;
+    public PlayerModel playerBase;
+    public GunModel gun;
     UserSettings settings;
 
     public static Tower Instance
