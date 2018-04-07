@@ -8,10 +8,13 @@ public class Tower : MonoBehaviour
     public float shootingAnimRange = 0.2f;
     public Animator avatarAnimator;
     public event Action OnDead;
-    public float Health;   
+    public float Health;
+    public ResourceBar HealthBar;
+    [Header("Откуда вылетает пуля")]
+    public Transform bulletStartPlace;
 
-    PlayerModel playerBase;
-    GunModel gun;
+    public PlayerModel playerBase;
+    public GunModel gun;
     UserSettings settings;
 
     public static Tower Instance
@@ -24,12 +27,18 @@ public class Tower : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        HealthBar.maxAmount = playerBase.MaxHealth/50;
+        HealthBar.amount = playerBase.Health/50;
+    }
+
     public void Initialize()
     {
         playerBase = new PlayerModel();
         gun = new GunModel();
         settings = FindObjectOfType<UserSettings>();
-        settings.Init(playerBase);
+        settings.Init(playerBase, gun);
     }
 
     public void StartGame()
@@ -55,6 +64,7 @@ public class Tower : MonoBehaviour
 
     public void Damage(float count)
     {
+        Debug.Log("Tower damaged : old = " + playerBase.Health + " :: new = " + (playerBase.Health - count).ToString());
         playerBase.Health -= count;
         if (playerBase.Health <= 0)
             Dead();
