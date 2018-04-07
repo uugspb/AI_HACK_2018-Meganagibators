@@ -55,6 +55,7 @@ public class Tower : MonoBehaviour
 
     public void Damage(float count)
     {
+        Debug.Log("Tower damaged : old = " + playerBase.Health + " :: new = " + (playerBase.Health - count).ToString());
         playerBase.Health -= count;
         if (playerBase.Health <= 0)
             Dead();

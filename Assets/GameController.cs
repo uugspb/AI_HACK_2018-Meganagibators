@@ -102,7 +102,7 @@ public class GameController : MonoBehaviour
             return;
         }
         
-        var npc = npcs[npcs.Count - 1];
+        var npc = npcs[0];
         npc.model.HP -= model.Damage;
         
         Debug.Log("damage " + npc.model.HP + " | " + model.Damage);
@@ -117,8 +117,8 @@ public class GameController : MonoBehaviour
             var variationStat = new VariationStats(distancePassed, npc.DamageDealt);
            
             variationStats.Add(variationStat);
-            npcs.RemoveAt(npcs.Count - 1);
-            Destroy(npc.gameObject);
+            npcs.RemoveAt(0);
+            npc.Kill();
             Debug.Log("destroy");
             if (npcs.Count == 0)
             {

@@ -11,6 +11,7 @@ public class NPC : MonoBehaviour
     [NonSerialized]
     public float DamageDealt;
 
+<<<<<<< HEAD
     private bool isRotate = true;
 
     private void Start()
@@ -36,4 +37,16 @@ public class NPC : MonoBehaviour
     }
 
 
+=======
+    public void Kill()
+    {
+        animator.SetTrigger("destroy");
+        LeanTween.cancel(gameObject);
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(this.gameObject);
+    }
+>>>>>>> 5127065e81a0db0f479295dd42b87ecd512d1352
 }
