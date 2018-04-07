@@ -1,16 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    #region Inspector
     public float shootingAnimRange = 0.2f;
     public Animator avatarAnimator;
-    #endregion
+    public event Action OnDead;
+    public float Health;   
 
     PlayerModel playerBase;
-    PlayerModel playerRuntime;
     GunModel gun;
     UserSettings settings;
 
@@ -34,8 +34,9 @@ public class Tower : MonoBehaviour
 
     public void StartGame()
     {
+        Flush();
         StartCoroutine(DamageCoroutine());
-    } 
+    }
 
     public void StopGame()
     {
@@ -44,17 +45,25 @@ public class Tower : MonoBehaviour
 
     public void Flush()
     {
+        playerBase.Health = playerBase.MaxHealth;
+    }
 
+    public void LevelUp(int delta)
+    {
+        playerBase.skillPoints += delta;
     }
 
     public void Damage(float count)
     {
-
+        playerBase.Health -= count;
+        if (playerBase.Health <= 0)
+            Dead();
     }
 
     private IEnumerator DamageCoroutine()
     {
-        while (true) { 
+        while (true)
+        {
             yield return new WaitForSeconds(gun.fireRate);
             ShowShotAnim();
             GameController.Instance.Damage(gun);
@@ -70,5 +79,11 @@ public class Tower : MonoBehaviour
     private void HideShotAnim()
     {
         avatarAnimator.SetBool("shot", false);
+    }
+
+    private void Dead()
+    {
+        if (OnDead != null)
+            OnDead();
     }
 }
