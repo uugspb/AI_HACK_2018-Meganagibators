@@ -15,6 +15,7 @@ public class Simulation
         {
             float killtime;
             stats.Add(CalcStats(variation, i * spawnDelta, attack, userDamage, out killtime));
+            attack += killtime;
         }
 
         return stats.ToArray();
