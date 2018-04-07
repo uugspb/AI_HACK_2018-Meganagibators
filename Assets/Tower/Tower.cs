@@ -13,8 +13,8 @@ public class Tower : MonoBehaviour
     [Header("Откуда вылетает пуля")]
     public Transform bulletStartPlace;
 
-    PlayerModel playerBase;
-    GunModel gun;
+    public PlayerModel playerBase;
+    public GunModel gun;
     UserSettings settings;
 
     public static Tower Instance
