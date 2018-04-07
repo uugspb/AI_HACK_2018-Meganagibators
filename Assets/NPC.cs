@@ -8,4 +8,15 @@ public class NPC : MonoBehaviour
 
     [NonSerialized]
     public float DamageDealt;
+
+    public void Kill()
+    {
+        animator.SetTrigger("destroy");
+        LeanTween.cancel(gameObject);
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(this.gameObject);
+    }
 }
