@@ -6,10 +6,10 @@ public class GameController : MonoBehaviour
 {
     [Header("Черезе сколько спавнов получим поинты")]
     public int SpawnsToAward;
-    
+
     [Header("Сколько авард поинтов")]
     public int AwardPoints;
-    
+
     [Header("Пауза в секундах")]
     public int PauseTime;
 
@@ -17,11 +17,14 @@ public class GameController : MonoBehaviour
     public GameObject Bullet;
     public float bulletSpeed = 0.1f;
 
+    [Header("Префаб текстового сообщения")]
+    public SimpleMessage messagePrefab;
+
     private int wavesCount;
-    
+
     private List<NPC> npcs = new List<NPC>();
     private List<VariationStats> variationStats = new List<VariationStats>();
-    
+
     private static GameController _instance;
 
     public static GameController Instance
@@ -42,14 +45,14 @@ public class GameController : MonoBehaviour
 
     private void TowerDead()
     {
-        
+
     }
 
     public void StartWave()
     {
         variationStats.Clear();
         wavesCount++;
-        
+
         var spawner = Spawner.Instance;
         StartCoroutine(StartWaveCour(spawner));
     }
@@ -59,6 +62,7 @@ public class GameController : MonoBehaviour
         if (wavesCount % SpawnsToAward == 0)
         {
             LevelUp(AwardPoints);
+            GameController.Instance.ShowMessage("NEXT WAVE IS COMING", 5.0f);
             yield return new WaitForSeconds(PauseTime);
         }
         var spawnEnemes = 0;
@@ -69,7 +73,7 @@ public class GameController : MonoBehaviour
             var npc = spawner.SpawnBot();
             npcs.Add(npc);
 
-            var moveTime = 1/npc.model.Speed;
+            var moveTime = 1 / npc.model.Speed;
             LeanTween.moveX(npc.gameObject, tower.bulletStartPlace.transform.position.x, moveTime)
                 .setOnComplete(() =>
                 {
@@ -99,6 +103,12 @@ public class GameController : MonoBehaviour
         GeneticsController.Instance.OnPlayerLevelUp();
     }
 
+    public void ShowMessage(string text, float lifetime)
+    {
+        var go = Instantiate(messagePrefab);
+        go.GetComponent<SimpleMessage>().Initialize(text, lifetime);
+    }
+
     public void Damage(GunModel model)
     {
         if (npcs.Count == 0)
@@ -112,12 +122,12 @@ public class GameController : MonoBehaviour
         var npc = npcs[0];
         var distanceBullet = Vector3.Distance(bullet.transform.position, npc.transform.position);
         LeanTween.move(bullet, npc.transform.position, distanceBullet / bulletSpeed)
-            .setOnComplete(() => 
+            .setOnComplete(() =>
             {
                 BulletFlowen(npc, model, bullet);
-            });   
+            });
     }
-    
+
     private void BulletFlowen(NPC npc, GunModel model, GameObject bullet)
     {
         Destroy(bullet);
