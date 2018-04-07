@@ -23,6 +23,11 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        
+    }
+    
     public void StartWave()
     {
         var spawner = Spawner.Instance;
@@ -48,7 +53,13 @@ public class GameController : MonoBehaviour
 
     public void Damage(GunModel model)
     {
+        
         //var npc = npcs[npcs.Count];
         //npc.model.HP
+    }
+
+    public void OnStartClick()
+    {
+        StartWave();
     }
 }
