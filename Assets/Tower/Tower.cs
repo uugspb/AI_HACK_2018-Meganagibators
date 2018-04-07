@@ -36,7 +36,7 @@ public class Tower : MonoBehaviour
         playerBase = new PlayerModel();
         gun = new GunModel();
         settings = FindObjectOfType<UserSettings>();
-        settings.Init(playerBase);
+        settings.Init(playerBase, gun);
     }
 
     public void StartGame()
