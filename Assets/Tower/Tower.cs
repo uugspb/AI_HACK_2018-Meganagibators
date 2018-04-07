@@ -21,12 +21,7 @@ public class Tower : MonoBehaviour
 
     public void Initialize()
     {
-        player = new PlayerModel()
-        {
-            Armor = 10,
-            MaxHealth = 50,
-            RegenPerSecond = 0
-        };
+        player = new PlayerModel();
         gun = new GunModel();
         settings = FindObjectOfType<UserSettings>();
         settings.Init(player);
