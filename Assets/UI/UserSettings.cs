@@ -19,6 +19,8 @@ public class UserSettings : MonoBehaviour {
     public ParameterSlider RegenSlider;
     public ParameterSlider DamageSlider;
 
+    public event Action OnParamsChanged;
+
     public void Init(PlayerModel model, GunModel gunModel)
     {
         this.model = model;
@@ -32,6 +34,7 @@ public class UserSettings : MonoBehaviour {
         RegenSlider.OnAddButton += RegenSlider_OnAddButton;
         DamageSlider.value = gunModel.Damage;
         DamageSlider.OnAddButton += DamageSlider_OnAddButton;
+
     }
     private void DamageSlider_OnAddButton(ParameterSlider obj)
     {
@@ -40,6 +43,8 @@ public class UserSettings : MonoBehaviour {
         DamageSlider.value = gunModel.Damage;
         model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();
+        if (OnParamsChanged != null)
+            OnParamsChanged();
     }
 
     private void RegenSlider_OnAddButton(ParameterSlider obj)
@@ -49,7 +54,10 @@ public class UserSettings : MonoBehaviour {
         RegenSlider.value = model.RegenPerSecond;
         model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();
+        if (OnParamsChanged != null)
+            OnParamsChanged();
     }
+
 
     private void ArmorSlider_OnAddButton(ParameterSlider obj)
     {
@@ -58,6 +66,8 @@ public class UserSettings : MonoBehaviour {
         ArmorSlider.value = model.Armor;
         model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();
+        if (OnParamsChanged != null)
+            OnParamsChanged();
     }
 
     private void MaxHealthSlider_OnAddButton(ParameterSlider obj)
@@ -68,6 +78,8 @@ public class UserSettings : MonoBehaviour {
         MaxHealthSlider.value = model.MaxHealth;
         model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();
+        if (OnParamsChanged != null)
+            OnParamsChanged();
     }
 
     private void Update()

@@ -74,6 +74,14 @@ public class GeneticsController : MonoBehaviour
     #region public methods
     public void ActivateGenetics()
     {
+        if (geneticsState.currentPopulation != null)
+        {
+            ResumeGenetics();
+            return;
+        }
+
+        FindObjectOfType<UserSettings>().OnParamsChanged += OnUserSkillIncreased;
+
         currentBotSkillPoints = baseBotSkillPoints;
 
         Population firstPopulation = GetFirstPopulation();
@@ -125,17 +133,7 @@ public class GeneticsController : MonoBehaviour
         // TODO считаем оценку по стате, при очень низкой (или при сильно меньшей, чем была посчитана)
         // даем боту бонусные скиллпоинты (возможно бонусные скиллпоинты должны зависить от разницы между оценками)
 
-        // так как приходят статы по каждому отдельному мобу, считаем среднее
-        VariationStats avg = new VariationStats(0.0f, 0.0f);
-        for (int i = 0; i < stats.Length; i++)
-        {
-            avg.damageDealt += stats[i].damageDealt;
-            avg.distancePassed += stats[i].distancePassed;
-        }
-
-        avg.damageDealt /= (float)stats.Length;
-
-        float fitnessValue = CalcFitnessValue(avg);
+        CalcAvgFitnessValue(stats);
 
         // TODO собственно говоря начислить скиллпоинтов боту
 
@@ -214,8 +212,7 @@ public class GeneticsController : MonoBehaviour
     /// <param name="variation"></param>
     private void CalcFitnessValue(Variation variation)
     {
-        // TODO провести симуляцию
-        variation.fitnessValue = 0.0f;
+        variation.fitnessValue = CalcAvgFitnessValue(Simulation.Simulate(variation));
     }
 
     /// <summary>
@@ -233,6 +230,21 @@ public class GeneticsController : MonoBehaviour
     {
         for (int i = 0; i < population.variations.Length; i++)
             CalcFitnessValue(population.variations[i]);
+    }
+
+    private float CalcAvgFitnessValue(VariationStats[] variationStats)
+    {
+        // так как приходят статы по каждому отдельному мобу, считаем среднее
+        VariationStats avg = new VariationStats(0.0f, 0.0f);
+        for (int i = 0; i < variationStats.Length; i++)
+        {
+            avg.damageDealt += variationStats[i].damageDealt;
+            avg.distancePassed += variationStats[i].distancePassed;
+        }
+
+        avg.damageDealt /= (float)variationStats.Length;
+
+        return CalcFitnessValue(avg);
     }
 
     private Variation[] SelectParents(Population population)
