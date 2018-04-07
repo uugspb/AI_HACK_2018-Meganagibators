@@ -25,9 +25,15 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        Tower.Instance.Initialize();
+        global::Tower.Instance.Initialize();
+        global::Tower.Instance.OnDead += TowerDead;
     }
-    
+
+    private void TowerDead()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void StartWave()
     {
         var spawner = Spawner.Instance;
@@ -38,7 +44,7 @@ public class GameController : MonoBehaviour
     {
         var spawnEnemes = 0;
         var partTime = spawner.SpawnTime / spawner.SpawnRate;
-        var tower = Tower.Instance;
+        var tower = global::Tower.Instance;
         while (spawnEnemes <= spawner.SpawnRate)
         {
             var npc = spawner.SpawnBot();
@@ -49,6 +55,11 @@ public class GameController : MonoBehaviour
             spawnEnemes++;
             yield return new WaitForSeconds(partTime);
         }
+    }
+
+    private void LevelUp(int skillPoints)
+    {
+        Tower.Instance.LevelUp(skillPoints);
     }
 
     public void Damage(GunModel model)
@@ -68,7 +79,7 @@ public class GameController : MonoBehaviour
 
     public void OnStartClick()
     {
-        Tower.Instance.StartGame();
+        global::Tower.Instance.StartGame();
         StartWave();
     }
 }
