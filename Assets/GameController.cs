@@ -70,6 +70,7 @@ public class GameController : MonoBehaviour
                 .setOnComplete(() =>
                 {
                     NPCDamageStart(npc);
+                    npc.NearTower();
                 });
             spawnEnemes++;
             yield return new WaitForSeconds(partTime);

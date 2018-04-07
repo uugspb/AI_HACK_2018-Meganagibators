@@ -11,7 +11,6 @@ public class NPC : MonoBehaviour
     [NonSerialized]
     public float DamageDealt;
 
-<<<<<<< HEAD
     private bool isRotate = true;
 
     private void Start()
@@ -22,10 +21,10 @@ public class NPC : MonoBehaviour
     private void MakeAnimation()
     {
         if (!isRotate) return;
-        var time = (1 / model.Speed) ;
+        var time = (1 / model.Speed) / 5;
         if (CircleAnim)
         {
-            LeanTween.rotate(AnimationObject, new Vector3(0, 0, 360), time)
+            LeanTween.rotateAround(AnimationObject, Vector3.forward, 360f, time)
             .setOnComplete(MakeAnimation);
         }
     }
@@ -35,9 +34,7 @@ public class NPC : MonoBehaviour
         LeanTween.cancel(AnimationObject);
         isRotate = false;
     }
-
-
-=======
+    
     public void Kill()
     {
         animator.SetTrigger("destroy");
@@ -48,5 +45,4 @@ public class NPC : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
->>>>>>> 5127065e81a0db0f479295dd42b87ecd512d1352
 }
