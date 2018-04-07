@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class UserSettings : MonoBehaviour {
 
     public const float ARM_PER_POINT = 1;
-    public const float REG_PER_POINT = 0.2f;
-    public const float MAX_HEALTH_PER_POINT = 1;
+    public const float REG_PER_POINT = 0.1f;
+    public const float MAX_HEALTH_PER_POINT = 5;
 
     private PlayerModel model;
 
@@ -35,6 +35,7 @@ public class UserSettings : MonoBehaviour {
         var addingPoints = Math.Min(5, model.skillPoints);
         model.RegenPerSecond = REG_PER_POINT * addingPoints;
         RegenSlider.value = model.RegenPerSecond;
+        AvailableSkills.text = model.skillPoints.ToString();
     }
 
     private void ArmorSlider_OnAddButton(ParameterSlider obj)
@@ -42,6 +43,7 @@ public class UserSettings : MonoBehaviour {
         var addingPoints = Math.Min(5, model.skillPoints);
         model.Armor = ARM_PER_POINT* addingPoints;
         ArmorSlider.value = model.RegenPerSecond;
+        AvailableSkills.text = model.skillPoints.ToString();
     }
 
     private void MaxHealthSlider_OnAddButton(ParameterSlider obj)
@@ -49,5 +51,11 @@ public class UserSettings : MonoBehaviour {
         var addingPoints = Math.Min(5, model.skillPoints);
         model.MaxHealth = REG_PER_POINT * addingPoints;
         MaxHealthSlider.value = model.RegenPerSecond;
+        AvailableSkills.text = model.skillPoints.ToString();
+    }
+
+    private void Update()
+    {
+        AvailableSkills.text = model.skillPoints.ToString();
     }
 }

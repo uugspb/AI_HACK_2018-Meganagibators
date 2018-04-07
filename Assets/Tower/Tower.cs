@@ -5,14 +5,12 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    #region Inspector
     public float shootingAnimRange = 0.2f;
     public Animator avatarAnimator;
     public event Action OnDead;
-    #endregion
+    public float Health;   
 
     PlayerModel playerBase;
-    PlayerModel playerRuntime;
     GunModel gun;
     UserSettings settings;
 
@@ -47,19 +45,18 @@ public class Tower : MonoBehaviour
 
     public void Flush()
     {
-        playerRuntime = new PlayerModel
-        {
-            Armor = playerBase.Armor,
-            MaxHealth = playerBase.MaxHealth,
-            RegenPerSecond = playerBase.RegenPerSecond,
-            skillPoints = playerBase.skillPoints,
-        };
+        playerBase.Health = playerBase.MaxHealth;
+    }
+
+    public void LevelUp(int delta)
+    {
+        playerBase.skillPoints += delta;
     }
 
     public void Damage(float count)
     {
-        playerRuntime.MaxHealth -= count;
-        if (playerRuntime.MaxHealth <= 0)
+        playerBase.Health -= count;
+        if (playerBase.Health <= 0)
             Dead();
     }
 

@@ -33,8 +33,14 @@ public class GameController : MonoBehaviour
     {
         wavesCount = 0;
         Tower.Instance.Initialize();
+        Tower.Instance.OnDead += TowerDead;
     }
-    
+
+    private void TowerDead()
+    {
+        
+    }
+
     public void StartWave()
     {
         variationStats.Clear();
@@ -48,13 +54,12 @@ public class GameController : MonoBehaviour
     {
         if (wavesCount % SpawnsToAward == 0)
         {
-            // ТУТ выдаем авард
-            GeneticsController.Instance.OnPlayerLevelUp();
+            LevelUp(AwardPoints);
             yield return new WaitForSeconds(PauseTime);
         }
         var spawnEnemes = 0;
         var partTime = spawner.SpawnTime / spawner.SpawnRate;
-        var tower = Tower.Instance;
+        var tower = global::Tower.Instance;
         while (spawnEnemes <= spawner.SpawnRate)
         {
             var npc = spawner.SpawnBot();
@@ -81,6 +86,12 @@ public class GameController : MonoBehaviour
         npc.DamageDealt += npc.model.Damage;
         Tower.Instance.Damage(npc.model.Damage);
         yield return new WaitForSeconds(npc.model.FireRate);
+    }
+
+    private void LevelUp(int skillPoints)
+    {
+        Tower.Instance.LevelUp(skillPoints);
+        GeneticsController.Instance.OnPlayerLevelUp();
     }
 
     public void Damage(GunModel model)
@@ -115,7 +126,7 @@ public class GameController : MonoBehaviour
 
     public void OnStartClick()
     {
-        Tower.Instance.StartGame();
+        global::Tower.Instance.StartGame();
         StartWave();
     }
 }
