@@ -12,6 +12,7 @@ public class PlayerModel{
 
 public class GunModel
 {
-    public float Damage;
-    public float linearMultiplicator;
+    public float Damage = 20.0f;
+    public float linearMultiplicator = 0.5f;
+    public float fireRate = 2.0f;
 }
