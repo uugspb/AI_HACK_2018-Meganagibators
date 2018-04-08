@@ -30,10 +30,10 @@ public class Variation
     /// Судьба армора пока что неясна, поэтому пусть будет 0
     /// </summary>
     public static float armorValueByLevel = 0.0f;
-    public static float speedValueByLevel = 0.006f;
+    public static float speedValueByLevel = 0.01f;
     public static float damageValueByLevel = 0.5f;
     public static float fireRateValueByLevel = 0.1f;
-    public static float spawnRateValueByLevel = 0.04f;
+    public static float spawnRateValueByLevel = 0.02f;
     #endregion
 
     #region fields

@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
     { 
         Tower.Instance.OnDead -= TowerDead;
         lose = true;
-        ShowMessage("YOUR LOSE", 0f, () => { SceneManager.LoadScene(0); });
+        ShowMessage("YOUR LOSE", 0f, () => { SceneManager.LoadScene(1); });
         StopAllCoroutines();
     }
 
