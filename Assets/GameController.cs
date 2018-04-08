@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -23,7 +25,8 @@ public class GameController : MonoBehaviour
     private int wavesCount;
 
     private bool waveSarted = false;
-    
+    private bool lose = false;
+
     private List<NPC> npcs = new List<NPC>();
     private List<VariationStats> variationStats = new List<VariationStats>();
 
@@ -46,13 +49,16 @@ public class GameController : MonoBehaviour
     }
 
     private void TowerDead()
-    {
-
+    { 
+        Tower.Instance.OnDead -= TowerDead;
+        lose = true;
+        ShowMessage("YOUR LOSE", 0f, () => { SceneManager.LoadScene(0); });
+        StopAllCoroutines();
     }
 
     public void StartWave()
     {
-        if (waveSarted) return;
+        if (waveSarted || lose) return;
         waveSarted = true;
         variationStats.Clear();
         wavesCount++;
@@ -66,7 +72,7 @@ public class GameController : MonoBehaviour
         if (wavesCount % SpawnsToAward == 0)
         {
             LevelUp(AwardPoints);
-            GameController.Instance.ShowMessage("NEXT WAVE IS COMING", 5.0f);
+            ShowMessage("NEXT WAVE IS COMING", 5.0f);
             yield return new WaitForSeconds(PauseTime);
         }
         var spawnEnemes = 0;
@@ -85,7 +91,7 @@ public class GameController : MonoBehaviour
                     npc.NearTower();
                 });
             spawnEnemes++;
-            if(spawnEnemes >= spawner.SpawnRate)
+            if (spawnEnemes >= spawner.SpawnRate)
             {
                 waveSarted = false;
                 yield break;
@@ -97,14 +103,17 @@ public class GameController : MonoBehaviour
 
     private void NPCDamageStart(NPC npc)
     {
+        if (lose) return;
         StartCoroutine(DamageTower(npc));
     }
 
     IEnumerator DamageTower(NPC npc)
     {
-        npc.DamageDealt += npc.model.Damage;
-        Tower.Instance.Damage(npc.model.Damage);
-        yield return new WaitForSeconds(npc.model.FireRate);
+        while (npc != null) { 
+            npc.DamageDealt += npc.model.Damage;
+            Tower.Instance.Damage(npc.model.Damage);
+            yield return new WaitForSeconds(npc.model.FireRate);
+        }
     }
 
     private void LevelUp(int skillPoints)
@@ -113,10 +122,10 @@ public class GameController : MonoBehaviour
         GeneticsController.Instance.OnPlayerLevelUp();
     }
 
-    public void ShowMessage(string text, float lifetime)
+    public void ShowMessage(string text, float lifetime, Action onClick = null)
     {
-        var go = Instantiate(messagePrefab);
-        go.GetComponent<SimpleMessage>().Initialize(text, lifetime);
+        var go = Instantiate(messagePrefab, FindObjectOfType<Canvas>().transform);
+        go.GetComponent<SimpleMessage>().Initialize(text, lifetime, onClick);
     }
 
     public void Damage(GunModel model)
