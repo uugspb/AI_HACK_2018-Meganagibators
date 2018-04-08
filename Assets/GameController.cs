@@ -112,7 +112,7 @@ public class GameController : MonoBehaviour
         while (npc != null) { 
             npc.DamageDealt += npc.model.Damage;
             Tower.Instance.Damage(npc.model.Damage);
-            yield return new WaitForSeconds(npc.model.FireRate);
+            yield return new WaitForSeconds(1/npc.model.FireRate);
         }
     }
 

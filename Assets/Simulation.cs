@@ -27,7 +27,7 @@ public class Simulation
         var runTime = 1 / variation.SpeedValue + spawnTime;
         var lifetime = atackTime + killTime;
         var npcFightTime = lifetime - runTime;
-        var damage = npcFightTime > 0? Mathf.FloorToInt(npcFightTime / variation.FireRateValue) * variation.DamageValue: 0;
+        var damage = npcFightTime > 0? Mathf.FloorToInt(npcFightTime * variation.FireRateValue) * variation.DamageValue: 0;
         //var distance = atackTime + killTime >= runTime ? 1 : 1 / variation.SpeedValue / (1 / variation.SpeedValue - Mathf.Abs(((runTime) - (atackTime + killTime))));
         var distance = Mathf.Max(spawnTime, atackTime) + killTime < runTime ? ((1 / variation.SpeedValue) - (runTime - (Mathf.Max(spawnTime, atackTime) + killTime))) / (1 / variation.SpeedValue) : 1;
         return new VariationStats(distance, damage);
