@@ -21,9 +21,17 @@ public class UserSettings : MonoBehaviour {
     public ParameterSlider RegenSlider;
     public ParameterSlider DamageSlider;
 
+    public GameObject StartButton;
+
     public List<GameObject> Pluses;
 
     public event Action OnParamsChanged;
+
+    public void StartButtonClick()
+    {
+        StartButton.SetActive(false);
+        GameController.Instance.OnStartClick();
+    }
 
     public void Init(PlayerModel model, GunModel gunModel)
     {
