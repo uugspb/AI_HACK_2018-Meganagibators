@@ -25,6 +25,11 @@ public class Spawner : MonoBehaviour
             return _instance;
         }
     }
+
+    public Spawner()
+    {
+        _instance = this;
+    }
     
     public NPC SpawnBot()
     {

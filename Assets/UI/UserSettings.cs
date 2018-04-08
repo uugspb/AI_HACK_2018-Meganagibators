@@ -61,7 +61,7 @@ public class UserSettings : MonoBehaviour {
     private void RegenSlider_OnAddButton(ParameterSlider obj)
     {
         var addingPoints = Math.Min(5, model.skillPoints);
-        gunModel.Damage += REG_PER_POINT * addingPoints;
+        model.RegenPerSecond += REG_PER_POINT * addingPoints;
         RegenSlider.value = model.RegenPerSecond;
         model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();

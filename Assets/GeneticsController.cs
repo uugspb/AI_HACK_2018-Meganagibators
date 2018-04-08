@@ -222,8 +222,12 @@ public class GeneticsController : MonoBehaviour
     /// <returns>0 - все очень плохо (ничего не пройденно и не задамажено)</returns>
     private float CalcFitnessValue(VariationStats stats)
     {
-        // TODO коэффициенты?
-        return stats.distancePassed + stats.damageDealt;
+        // пройденная дистанция и так в [0, 1]
+        float distanceGrade = stats.distancePassed;
+        // оценку дамага считаем как снятую часть жизней игрока
+        float damageGrade = stats.damageDealt / Tower.Instance.playerBase.MaxHealth;
+        
+        return 0.2f * distanceGrade + 0.8f * damageGrade;
     }
 
     private void CalcFitnessValues(Population population)
