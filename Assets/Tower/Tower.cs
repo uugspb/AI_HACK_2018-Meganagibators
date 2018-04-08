@@ -73,7 +73,7 @@ public class Tower : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(gun.fireRate);
+            yield return new WaitForSeconds(1 / gun.fireRate);
             ShowShotAnim();
             GameController.Instance.Damage(gun);
         }
