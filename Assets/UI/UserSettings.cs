@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class UserSettings : MonoBehaviour {
 
-    public const float FIRE_RATE_PER_POINT = 0.01f;
-    public const float REG_PER_POINT = 0.0001f;
-    public const float DMG_PER_POINT = 0.5f;
+    public const float FIRE_RATE_PER_POINT = 0.017f;
+    public const float REG_PER_POINT = 0.0003f;
+    public const float DMG_PER_POINT = 0.7f;
     public const float MAX_HEALTH_PER_POINT = 5;
 
     private PlayerModel model;

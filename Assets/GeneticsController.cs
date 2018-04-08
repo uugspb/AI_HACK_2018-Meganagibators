@@ -50,6 +50,7 @@ public class GeneticsController : MonoBehaviour
 
     private Variation currentBestVariation;
     private Variation lastGivenVariation;
+    private float prevLastGivenVariationFitness = float.NaN;
     
     private float currentBotSkillPoints;
 
@@ -83,6 +84,7 @@ public class GeneticsController : MonoBehaviour
         FindObjectOfType<UserSettings>().OnParamsChanged += OnUserSkillIncreased;
 
         currentBotSkillPoints = baseBotSkillPoints;
+        prevLastGivenVariationFitness = float.NaN;
 
         Population firstPopulation = GetFirstPopulation();
 
@@ -130,13 +132,24 @@ public class GeneticsController : MonoBehaviour
 
     public void OnVariationDied(VariationStats[] stats)
     {
-        // TODO считаем оценку по стате, при очень низкой (или при сильно меньшей, чем была посчитана)
-        // даем боту бонусные скиллпоинты (возможно бонусные скиллпоинты должны зависить от разницы между оценками)
+        float statsFitness = CalcAvgFitnessValue(stats);
+        float simFitness = lastGivenVariation.fitnessValue;
+        float prevFitness = float.IsNaN(prevLastGivenVariationFitness) ? statsFitness : prevLastGivenVariationFitness;
 
-        CalcAvgFitnessValue(stats);
+        float simQualityGrade = Mathf.Clamp(statsFitness - simFitness, 0.0f, 1.0f);
+        float degradeGrade = Mathf.Clamp(prevFitness - statsFitness, 0.0f, 1.0f);
 
-        // TODO собственно говоря начислить скиллпоинтов боту
+        // бонусные скиллпоинты начисляем, если реальный результат оказался хуже, чем симуляция,
+        // или хуже, чем предыдущий результат
+        float bonusGrade = 0.3f * simQualityGrade + 0.7f * degradeGrade;
 
+        // 0.5 чтоб не так резко возрастало, 
+        // при введении бустов можно увеличить скорость роста
+        // с мыслью, что это будет компенсировано бустами
+        currentBotSkillPoints += 0.5f * bonusGrade;
+
+        prevLastGivenVariationFitness = statsFitness;
+        
         // TODO юзер может вкачать что-нибудь пока волна активна,
         // соответственно полученная здесь оценка будет не очень адекватна, 
         // потому что часть мобов получит стату со старой прокачкой, а часть с новой
