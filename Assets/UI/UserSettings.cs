@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class UserSettings : MonoBehaviour {
 
-    public const float ARM_PER_POINT = 1;
-    public const float REG_PER_POINT = 0.1f;
-    public const float DMG_PER_POINT = 1f;
+    public const float FIRE_RATE_PER_POINT = 0.01f;
+    public const float REG_PER_POINT = 0.0001f;
+    public const float DMG_PER_POINT = 0.5f;
     public const float MAX_HEALTH_PER_POINT = 5;
 
     private PlayerModel model;
@@ -16,7 +16,8 @@ public class UserSettings : MonoBehaviour {
     public Text AvailableSkills;
 
     public ParameterSlider MaxHealthSlider;
-    public ParameterSlider ArmorSlider;
+    [UnityEngine.Serialization.FormerlySerializedAs("ArmorSlider")]
+    public ParameterSlider FireRateSlider;
     public ParameterSlider RegenSlider;
     public ParameterSlider DamageSlider;
 
@@ -31,8 +32,8 @@ public class UserSettings : MonoBehaviour {
         AvailableSkills.text = model.skillPoints.ToString();
         MaxHealthSlider.value = model.MaxHealth;
         MaxHealthSlider.OnAddButton += MaxHealthSlider_OnAddButton;
-        ArmorSlider.value = gunModel.fireRate;
-        ArmorSlider.OnAddButton += ArmorSlider_OnAddButton;
+        FireRateSlider.value = gunModel.fireRate;
+        FireRateSlider.OnAddButton += FireRateSlider_OnAddButton;
         RegenSlider.value = model.RegenPerSecond;
         RegenSlider.OnAddButton += RegenSlider_OnAddButton;
         DamageSlider.value = gunModel.Damage;
@@ -62,11 +63,11 @@ public class UserSettings : MonoBehaviour {
     }
 
 
-    private void ArmorSlider_OnAddButton(ParameterSlider obj)
+    private void FireRateSlider_OnAddButton(ParameterSlider obj)
     {
         var addingPoints = Math.Min(5, model.skillPoints);
-        gunModel.fireRate += ARM_PER_POINT * addingPoints;
-        ArmorSlider.value = gunModel.fireRate;
+        gunModel.fireRate += FIRE_RATE_PER_POINT * addingPoints;
+        FireRateSlider.value = gunModel.fireRate;
         model.skillPoints -= addingPoints;
         AvailableSkills.text = model.skillPoints.ToString();
         if (OnParamsChanged != null)
