@@ -53,5 +53,10 @@ public class GeneticsControllerInspector : Editor
             EditorGUILayout.TextField("spawnRate", lastGiven.spawnRateLevel.ToString() + " (" + lastGiven.SpawnRateValue + ")");
         }
     }
+
+    public override bool RequiresConstantRepaint()
+    {
+        return true;
+    }
 }
 #endif
