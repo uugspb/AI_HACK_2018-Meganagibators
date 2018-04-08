@@ -22,6 +22,9 @@ public class GameController : MonoBehaviour
     [Header("Префаб текстового сообщения")]
     public SimpleMessage messagePrefab;
 
+    public AudioSource bgMusic;
+    public AudioSource waveSound;
+
     private int wavesCount;
 
     private bool waveSarted = false;
@@ -46,6 +49,7 @@ public class GameController : MonoBehaviour
         wavesCount = 0;
         Tower.Instance.Initialize();
         Tower.Instance.OnDead += TowerDead;
+        bgMusic.Play();
     }
 
     private void TowerDead()
@@ -78,6 +82,7 @@ public class GameController : MonoBehaviour
         var spawnEnemes = 0;
         var partTime = spawner.SpawnTime / spawner.SpawnRate;
         var tower = Tower.Instance;
+        waveSound.Play();
         do
         {
             var npc = spawner.SpawnBot();
