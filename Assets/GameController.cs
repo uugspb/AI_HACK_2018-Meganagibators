@@ -141,7 +141,7 @@ public class GameController : MonoBehaviour
         var npc = npcs[0];
         var distanceBullet = Vector3.Distance(bullet.transform.position, npc.transform.position);
         var angle = Vector3.Angle(bullet.transform.position, npc.transform.position);
-        bullet.transform.GetChild(0).localEulerAngles = new Vector3(0, 0, angle - 45f);
+        bullet.transform.GetChild(0).localEulerAngles = new Vector3(0, 0, Math.Abs(angle) + 45f);
         LeanTween.move(bullet, npc.transform.position, distanceBullet / bulletSpeed)
             .setOnComplete(() =>
             {
