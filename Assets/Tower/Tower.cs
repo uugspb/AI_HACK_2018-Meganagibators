@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    public float shootingAnimRange = 0.2f;
+    private float shootingAnimRange = 2;
     public Animator avatarAnimator;
     public event Action OnDead;
     public float Health;
