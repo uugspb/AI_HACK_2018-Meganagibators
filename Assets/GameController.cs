@@ -150,6 +150,10 @@ public class GameController : MonoBehaviour
     private void BulletFlowen(NPC npc, GunModel model, GameObject bullet)
     {
         Destroy(bullet);
+
+        if (npc == null || !npcs.Contains(npc))
+            return;
+
         npc.model.HP -= model.Damage;
 
         if (npc.model.HP <= 0)

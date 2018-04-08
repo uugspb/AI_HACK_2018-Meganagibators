@@ -16,6 +16,8 @@ public class Tower : MonoBehaviour
     public GunModel gun;
     UserSettings settings;
 
+    private bool isRunning = false;
+
     public static Tower Instance
     {
         get; private set;
@@ -28,8 +30,15 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
+        if (!isRunning)
+            return;
+
         HealthBar.maxAmount = playerBase.MaxHealth/50;
         HealthBar.amount = playerBase.Health/50;
+
+        playerBase.Health += playerBase.RegenPerSecond;
+        if (playerBase.Health > playerBase.MaxHealth)
+            playerBase.Health = playerBase.MaxHealth;
     }
 
     public void Initialize()
@@ -42,12 +51,14 @@ public class Tower : MonoBehaviour
 
     public void StartGame()
     {
+        isRunning = true;
         Flush();
         StartCoroutine(DamageCoroutine());
     }
 
     public void StopGame()
     {
+        isRunning = false;
         StopAllCoroutines();
     }
 

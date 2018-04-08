@@ -8,7 +8,7 @@ public class PlayerModel : object
     public int skillPoints = 0;
     public float MaxHealth = 50.0f;
     public float Armor = 0.0f;
-    public float RegenPerSecond = 0.5f;
+    public float RegenPerSecond = 0.005f;
     public float Health = 50.0f;
 }
 
