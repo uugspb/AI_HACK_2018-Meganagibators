@@ -15,23 +15,23 @@ public class Variation
     #region static
     private static Random rngesus = new Random();    
 
-    public static float hpBaseValue = 10.0f;
+    public static float hpBaseValue = 4.0f;
     /// <summary>
     /// Судьба армора пока что неясна, поэтому пусть будет 0
     /// </summary>
     public static float armorBaseValue = 0.0f;
-    public static float speedBaseValue = 0.2f;
-    public static float damageBaseValue = 5.0f;
-    public static float fireRateBaseValue = 0.5f;
+    public static float speedBaseValue = 0.1f;
+    public static float damageBaseValue = 1.0f;
+    public static float fireRateBaseValue = 1.0f;
     public static float spawnRateBaseValue = 1.0f;
 
-    public static float hpValueByLevel = 3.0f;
+    public static float hpValueByLevel = 0.4f;
     /// <summary>
     /// Судьба армора пока что неясна, поэтому пусть будет 0
     /// </summary>
     public static float armorValueByLevel = 0.0f;
-    public static float speedValueByLevel = 0.04f;
-    public static float damageValueByLevel = 1.0f;
+    public static float speedValueByLevel = 0.01f;
+    public static float damageValueByLevel = 0.5f;
     public static float fireRateValueByLevel = 0.1f;
     public static float spawnRateValueByLevel = 0.02f;
     #endregion
