@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,8 @@ public class UserSettings : MonoBehaviour {
     public ParameterSlider ArmorSlider;
     public ParameterSlider RegenSlider;
     public ParameterSlider DamageSlider;
+
+    public List<GameObject> Pluses;
 
     public event Action OnParamsChanged;
 
@@ -85,5 +88,19 @@ public class UserSettings : MonoBehaviour {
     private void Update()
     {
         AvailableSkills.text = model.skillPoints.ToString();
+        if(model.skillPoints > 0)
+        {
+            foreach(var p in Pluses)
+            {
+                p.SetActive(true);
+            }
+        }
+        else
+        {
+            foreach (var p in Pluses)
+            {
+                p.SetActive(false);
+            }
+        }
     }
 }
