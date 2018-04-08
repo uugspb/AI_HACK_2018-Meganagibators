@@ -7,7 +7,7 @@ public class Simulation
     public static VariationStats[] Simulate(Variation variation)
     {
         List<VariationStats> stats = new List<VariationStats>();
-        var spawnCount = Spawner.Instance.SpawnRate;
+        var spawnCount = variation.SpawnRateValue;
         var userDamage = Tower.Instance.gun;
         var spawnDelta = Spawner.Instance.SpawnTime / spawnCount;
         float attack = 0.0f;
@@ -28,7 +28,8 @@ public class Simulation
         var lifetime = atackTime + killTime;
         var npcFightTime = lifetime - runTime;
         var damage = npcFightTime > 0? Mathf.FloorToInt(npcFightTime / variation.FireRateValue) * variation.DamageValue: 0;
-        var distance = atackTime + killTime >= runTime ? 1 : 1 / variation.SpeedValue / (1 / variation.SpeedValue - ((runTime) - (atackTime + killTime)));
+        //var distance = atackTime + killTime >= runTime ? 1 : 1 / variation.SpeedValue / (1 / variation.SpeedValue - Mathf.Abs(((runTime) - (atackTime + killTime))));
+        var distance = Mathf.Max(spawnTime, atackTime) + killTime < runTime ? ((1 / variation.SpeedValue) - (runTime - (Mathf.Max(spawnTime, atackTime) + killTime))) / (1 / variation.SpeedValue) : 1;
         return new VariationStats(distance, damage);
     }
 }
